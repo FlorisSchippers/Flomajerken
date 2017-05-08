@@ -1,0 +1,48 @@
+body {
+    background: url(../images/background.png);
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+}
+
+body * {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+}
+
+airport0 {
+    background-image: url(../images/airport0.png);
+    width: 379px;
+    height: 224px;
+}
+
+airport1 {
+    background-image: url(../images/airport1.png);
+    width: 448px;
+    height: 224px;
+}
+
+airport2 {
+    background-image: url(../images/airport2.png);
+    width: 480px;
+    height: 257px;
+}
+
+airport3 {
+    background-image: url(../images/airport3.png);
+    width: 479px;
+    height: 256px;
+}
+
+airport4 {
+    background-image: url(../images/airport4.png);
+    width: 511px;
+    height: 256px;
+}
+
+airport5 {
+    background-image: url(../images/airport5.png);
+    width: 639px;
+    height: 304px;
+}

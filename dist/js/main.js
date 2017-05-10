@@ -1,11 +1,16 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var GameObject = (function () {
     function GameObject(name, x, y) {
-        this.div = document.createElement("airport");
+        this.div = document.createElement(name);
         document.body.appendChild(this.div);
         this.x = x;
         this.y = y;
@@ -19,16 +24,16 @@ var GameObject = (function () {
 var Airport = (function (_super) {
     __extends(Airport, _super);
     function Airport(user, x, y) {
-        var _this = this;
-        _super.call(this, "airport", x, y);
-        this.stage = 0;
-        this.user = user;
-        this.username = document.createElement("username");
-        this.username.innerHTML = this.user;
-        this.div.appendChild(this.username);
-        this.div.onclick = function (e) {
+        var _this = _super.call(this, "airport", x, y) || this;
+        _this.stage = 0;
+        _this.user = user;
+        _this.username = document.createElement("airportusername");
+        _this.username.innerHTML = _this.user;
+        _this.div.appendChild(_this.username);
+        _this.div.onclick = function (e) {
             _this._onclick();
         };
+        return _this;
     }
     Airport.prototype._onclick = function () {
         if (this.stage == 5) {
@@ -74,18 +79,81 @@ var Airport = (function (_super) {
 }(GameObject));
 var Game = (function () {
     function Game() {
-        this.airport0 = new Airport("Henk", 34, 17);
-        this.airport1 = new Airport("Eddie", 34 + 640, 17);
-        this.airport2 = new Airport("Brock", 34 + 1280, 17);
-        this.airport3 = new Airport("Peter", 34 + 320, 17 + 224);
-        this.airport4 = new Airport("Oscar", 34 + 960, 17 + 224);
-        this.airport5 = new Airport("Robin", 34, 17 + 448);
-        this.airport6 = new Airport("Casey", 34 + 640, 17 + 448);
-        this.airport7 = new Airport("Eva", 34 + 1280, 17 + 448);
+        var _this = this;
+        this.airports = [];
+        this.planes = [];
+        this.airports.push(new Airport("Henk", 2, 65));
+        this.airports.push(new Airport("Eddie", 2 + 640, 65));
+        this.airports.push(new Airport("Brock", 2 + 1280, 65));
+        this.airports.push(new Airport("Peter", 2 + 320, 65 + 224));
+        this.airports.push(new Airport("Oscar", 2 + 960, 65 + 224));
+        this.airports.push(new Airport("Robin", 2, 65 + 448));
+        this.airports.push(new Airport("Casey", 2 + 640, 65 + 448));
+        this.airports.push(new Airport("Eva", 2 + 1280, 65 + 448));
+        this.airports.push(new Airport("Sammie", 2 + 320, 65 + 672));
+        this.airports.push(new Airport("Harrie", 2 + 960, 65 + 672));
+        this.planes.push(new Plane("Henk"));
+        this.planes.push(new Plane("Eddie"));
+        this.planes.push(new Plane("Brock"));
+        this.planes.push(new Plane("Peter"));
+        this.planes.push(new Plane("Oscar"));
+        this.planes.push(new Plane("Robin"));
+        this.planes.push(new Plane("Casey"));
+        this.planes.push(new Plane("Eva"));
+        this.planes.push(new Plane("Sammie"));
+        this.planes.push(new Plane("Harrie"));
+        requestAnimationFrame(function () { return _this.gameLoop(); });
     }
+    Game.prototype.gameLoop = function () {
+        var _this = this;
+        this.planes.forEach(function (plane) {
+            plane.move();
+        });
+        requestAnimationFrame(function () { return _this.gameLoop(); });
+    };
     return Game;
 }());
 window.addEventListener("load", function () {
     new Game();
 });
+var Plane = (function (_super) {
+    __extends(Plane, _super);
+    function Plane(user) {
+        var _this = this;
+        var x = Math.round(Math.random());
+        if (x == 0) {
+            x = Math.random() * 10 * -500;
+        }
+        else {
+            x = window.innerWidth + Math.random() * 10 * 500;
+        }
+        var y = Math.random() * window.innerHeight;
+        if (x > 0) {
+            _this = _super.call(this, "leftplane", x, y) || this;
+            _this.goingRight = false;
+            _this.speed = -5;
+        }
+        else {
+            _this = _super.call(this, "rightplane", x, y) || this;
+            _this.goingRight = true;
+            _this.speed = 5;
+        }
+        _this.user = user;
+        _this.username = document.createElement("planeusername");
+        _this.username.innerHTML = _this.user;
+        _this.div.appendChild(_this.username);
+        return _this;
+    }
+    Plane.prototype.move = function () {
+        if (this.goingRight && this.x > window.innerWidth + 100) {
+            this.x = -50;
+        }
+        else if (!this.goingRight && this.x < -100) {
+            this.x = window.innerWidth + 100;
+        }
+        this.x += this.speed;
+        this.draw();
+    };
+    return Plane;
+}(GameObject));
 //# sourceMappingURL=main.js.map

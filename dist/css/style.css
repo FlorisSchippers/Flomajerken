@@ -17,11 +17,32 @@ airport {
     height: 224px;
 }
 
-username {
+airportusername {
     font-family: 'Open Sans', sans-serif;
     color:white;
     -webkit-text-stroke: 0.5px black;
     font-size : 25px;
     left: 250px;
     top: 150px;
+}
+
+planeusername {
+    font-family: 'Open Sans', sans-serif;
+    color:white;
+    -webkit-text-stroke: 0.5px black;
+    font-size : 15px;
+    left: 0px;
+    top: -20px;
+}
+
+leftplane {
+    background-image: url(../images/leftplane.png);
+    width: 50px;
+    height: 25px;
+}
+
+rightplane {
+    background-image: url(../images/rightplane.png);
+    width: 50px;
+    height: 25px;
 }

@@ -5,7 +5,7 @@ abstract class GameObject {
     public y: number;
 
     constructor(name: string, x: number, y: number) {
-        this.div = document.createElement("airport");
+        this.div = document.createElement(name);
         document.body.appendChild(this.div);
 
         this.x = x;

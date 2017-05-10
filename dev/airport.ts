@@ -9,10 +9,10 @@ class Airport extends GameObject {
     constructor(user: string, x: number, y: number) {
         super("airport", x, y);
         this.user = user;
-        this.username = document.createElement("username");
+        this.username = document.createElement("airportusername");
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
-        
+
         this.div.onclick = e => {
             this._onclick();
         }

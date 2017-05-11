@@ -1,13 +1,8 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GameObject = (function () {
     function GameObject(name, x, y) {
         this.div = document.createElement(name);
@@ -24,16 +19,16 @@ var GameObject = (function () {
 var Airport = (function (_super) {
     __extends(Airport, _super);
     function Airport(user, x, y) {
-        var _this = _super.call(this, "airport", x, y) || this;
-        _this.stage = 0;
-        _this.user = user;
-        _this.username = document.createElement("airportusername");
-        _this.username.innerHTML = _this.user;
-        _this.div.appendChild(_this.username);
-        _this.div.onclick = function (e) {
+        var _this = this;
+        _super.call(this, "airport", x, y);
+        this.stage = 0;
+        this.user = user;
+        this.username = document.createElement("airportusername");
+        this.username.innerHTML = this.user;
+        this.div.appendChild(this.username);
+        this.div.onclick = function (e) {
             _this._onclick();
         };
-        return _this;
     }
     Airport.prototype._onclick = function () {
         if (this.stage == 5) {
@@ -119,7 +114,6 @@ window.addEventListener("load", function () {
 var Plane = (function (_super) {
     __extends(Plane, _super);
     function Plane(user) {
-        var _this = this;
         var x = Math.round(Math.random());
         if (x == 0) {
             x = Math.random() * 10 * -500;
@@ -129,20 +123,19 @@ var Plane = (function (_super) {
         }
         var y = Math.random() * window.innerHeight;
         if (x > 0) {
-            _this = _super.call(this, "leftplane", x, y) || this;
-            _this.goingRight = false;
-            _this.speed = -5;
+            _super.call(this, "leftplane", x, y);
+            this.goingRight = false;
+            this.speed = -5;
         }
         else {
-            _this = _super.call(this, "rightplane", x, y) || this;
-            _this.goingRight = true;
-            _this.speed = 5;
+            _super.call(this, "rightplane", x, y);
+            this.goingRight = true;
+            this.speed = 5;
         }
-        _this.user = user;
-        _this.username = document.createElement("planeusername");
-        _this.username.innerHTML = _this.user;
-        _this.div.appendChild(_this.username);
-        return _this;
+        this.user = user;
+        this.username = document.createElement("planeusername");
+        this.username.innerHTML = this.user;
+        this.div.appendChild(this.username);
     }
     Plane.prototype.move = function () {
         if (this.goingRight && this.x > window.innerWidth + 100) {

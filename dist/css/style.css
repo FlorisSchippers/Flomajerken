@@ -46,3 +46,10 @@ rightplane {
     width: 50px;
     height: 25px;
 }
+
+::selection {
+  background: transparent; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: transparent; /* Gecko Browsers */
+}

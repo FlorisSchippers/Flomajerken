@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var GameObject = (function () {
     function GameObject(name, x, y) {
+        this.name = name;
         this.div = document.createElement(name);
         document.body.appendChild(this.div);
         this.x = x;
@@ -12,7 +13,15 @@ var GameObject = (function () {
         this.draw();
     }
     GameObject.prototype.draw = function () {
-        this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+        if (this.name == "leftplane") {
+            this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)rotate(-35deg)";
+        }
+        else if (this.name == "rightplane") {
+            this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)rotate(-35deg)";
+        }
+        else {
+            this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+        }
     };
     return GameObject;
 }());
@@ -121,16 +130,19 @@ var Plane = (function (_super) {
         else {
             x = window.innerWidth + Math.random() * 10 * 500;
         }
-        var y = Math.random() * window.innerHeight;
         if (x > 0) {
+            var y = (Math.random() * window.innerHeight) - 2 * x;
             _super.call(this, "leftplane", x, y);
             this.goingRight = false;
-            this.speed = -5;
+            this.xspeed = -5;
+            this.yspeed = 2.5;
         }
         else {
+            var y = (Math.random() * window.innerHeight) + 2 * x;
             _super.call(this, "rightplane", x, y);
             this.goingRight = true;
-            this.speed = 5;
+            this.xspeed = 5;
+            this.yspeed = -2.5;
         }
         this.user = user;
         this.username = document.createElement("planeusername");
@@ -139,12 +151,13 @@ var Plane = (function (_super) {
     }
     Plane.prototype.move = function () {
         if (this.goingRight && this.x > window.innerWidth + 100) {
-            this.x = -50;
+            this.x = 60;
         }
         else if (!this.goingRight && this.x < -100) {
             this.x = window.innerWidth + 100;
         }
-        this.x += this.speed;
+        this.x += this.xspeed;
+        this.y += this.yspeed;
         this.draw();
     };
     return Plane;

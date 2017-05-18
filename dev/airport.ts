@@ -12,6 +12,7 @@ class Airport extends GameObject {
         this.username = document.createElement("airportusername");
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
+        this.div.setAttribute("id", this.user);
 
         this.div.onclick = e => {
             this._onclick();

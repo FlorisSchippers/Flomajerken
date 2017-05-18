@@ -6,6 +6,9 @@ class Game {
     private planes: Plane[] = [];
 
     constructor() {
+        document.body.onclick = e => {
+            console.log("x: " + e.pageX + ", y: " + e.pageY);
+        }
         // tile: 64x32
         this.airports.push(new Airport("Henk", 2, 65));
         this.airports.push(new Airport("Eddie", 2 + 640, 65));
@@ -17,16 +20,16 @@ class Game {
         this.airports.push(new Airport("Eva", 2 + 1280, 65 + 448));
         this.airports.push(new Airport("Sammie", 2 + 320, 65 + 672));
         this.airports.push(new Airport("Harrie", 2 + 960, 65 + 672));
-        this.planes.push(new Plane("Henk"));
-        this.planes.push(new Plane("Eddie"));
-        this.planes.push(new Plane("Brock"));
-        this.planes.push(new Plane("Peter"));
-        this.planes.push(new Plane("Oscar"));
-        this.planes.push(new Plane("Robin"));
-        this.planes.push(new Plane("Casey"));
-        this.planes.push(new Plane("Eva"));
-        this.planes.push(new Plane("Sammie"));
-        this.planes.push(new Plane("Harrie"));
+        this.planes.push(new Plane("Henk", 2, 65));
+        this.planes.push(new Plane("Eddie", 2 + 640, 65));
+        this.planes.push(new Plane("Brock", 2 + 1280, 65));
+        this.planes.push(new Plane("Peter", 2 + 320, 65 + 224));
+        this.planes.push(new Plane("Oscar", 2 + 960, 65 + 224));
+        this.planes.push(new Plane("Robin", 2, 65 + 448));
+        this.planes.push(new Plane("Casey", 2 + 640, 65 + 448));
+        this.planes.push(new Plane("Eva", 2 + 1280, 65 + 448));
+        this.planes.push(new Plane("Sammie", 2 + 320, 65 + 672));
+        this.planes.push(new Plane("Harrie", 2 + 960, 65 + 672));
         requestAnimationFrame(() => this.gameLoop());
     }
 
@@ -36,7 +39,6 @@ class Game {
         });
         requestAnimationFrame(() => this.gameLoop());
     }
-
 }
 
 window.addEventListener("load", function () {

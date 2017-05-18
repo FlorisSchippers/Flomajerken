@@ -1,4 +1,4 @@
-abstract class GameObject {
+class GameObject {
 
     public name: string;
     protected div: HTMLElement;
@@ -16,12 +16,12 @@ abstract class GameObject {
     }
 
     protected draw(): void {
-        if (this.name == "leftplane") {
-            this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)rotate(-35deg)";
-        } else if (this.name == "rightplane") {
-            this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)rotate(-35deg)";
-        } else {
+        // if (this.name == "leftplane") {
+        //     this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)rotate(-35deg)";
+        // } else if (this.name == "rightplane") {
+        //     this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)rotate(-35deg)";
+        // } else {
             this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
-        }
+        // }
     }
 }

@@ -79,9 +79,6 @@ var Game = (function () {
         var _this = this;
         this.airports = [];
         this.planes = [];
-        document.body.onclick = function (e) {
-            console.log("x: " + e.pageX + ", y: " + e.pageY);
-        };
         this.airports.push(new Airport("Henk", 2, 65));
         this.airports.push(new Airport("Eddie", 2 + 640, 65));
         this.airports.push(new Airport("Brock", 2 + 1280, 65));
@@ -130,11 +127,28 @@ var Plane = (function (_super) {
             var y = 0 - window.innerHeight - Math.random() * window.innerHeight;
             _super.call(this, "leftplane", x, y);
             this.goingRight = false;
-            var targetX = airportX + 330;
-            var targetY = airportY + 130;
-            this.targetX = targetX;
-            var deltaX = x - targetX;
-            var deltaY = targetY - y;
+            this.targetX = airportX + 330;
+            this.targetY = airportY + 130;
+            this.determineFlightPath(x, y);
+        }
+        else {
+            var y = window.innerHeight + Math.random() * window.innerHeight;
+            _super.call(this, "rightplane", x, y);
+            this.goingRight = true;
+            this.targetX = airportX + 230;
+            this.targetY = airportY + 180;
+            this.determineFlightPath(x, y);
+        }
+        this.user = user;
+        this.username = document.createElement("planeusername");
+        this.username.innerHTML = this.user;
+        this.div.appendChild(this.username);
+        this.landed = false;
+    }
+    Plane.prototype.determineFlightPath = function (x, y) {
+        if (!this.goingRight) {
+            var deltaX = x - this.targetX;
+            var deltaY = this.targetY - y;
             if (deltaX > deltaY) {
                 var ratio = deltaX / deltaY;
                 this.xspeed = -1 * ratio;
@@ -146,15 +160,9 @@ var Plane = (function (_super) {
                 this.yspeed = 1 * ratio;
             }
         }
-        else {
-            var y = window.innerHeight + Math.random() * window.innerHeight;
-            _super.call(this, "rightplane", x, y);
-            this.goingRight = true;
-            var targetX = airportX + 230;
-            var targetY = airportY + 180;
-            this.targetX = targetX;
-            var deltaX = targetX - x;
-            var deltaY = y - targetY;
+        else if (this.goingRight) {
+            var deltaX = this.targetX - x;
+            var deltaY = y - this.targetY;
             if (deltaX > deltaY) {
                 var ratio = deltaX / deltaY;
                 this.xspeed = 1 * ratio;
@@ -166,12 +174,7 @@ var Plane = (function (_super) {
                 this.yspeed = -1 * ratio;
             }
         }
-        this.landed = false;
-        this.user = user;
-        this.username = document.createElement("planeusername");
-        this.username.innerHTML = this.user;
-        this.div.appendChild(this.username);
-    }
+    };
     Plane.prototype.move = function () {
         if (this.goingRight && this.landed == false && this.x >= this.targetX) {
             this.landed = true;
@@ -196,10 +199,12 @@ var Plane = (function (_super) {
         if (this.goingRight && this.x > window.innerWidth + 100) {
             this.x = 0 - window.innerWidth - Math.random() * window.innerWidth;
             this.y = window.innerHeight + Math.random() * window.innerHeight;
+            this.determineFlightPath(this.x, this.y);
         }
         else if (!this.goingRight && this.x < -100) {
             this.x = window.innerWidth + Math.random() * window.innerWidth;
             var y = 0 - window.innerHeight - Math.random() * window.innerHeight;
+            this.determineFlightPath(this.x, this.y);
         }
         this.x += this.xspeed;
         this.y += this.yspeed;

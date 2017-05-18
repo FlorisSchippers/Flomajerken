@@ -2,15 +2,17 @@
 
 class Plane extends GameObject {
 
+    private user: string;
+    private username: HTMLElement;
     private goingRight: boolean;
     private xspeed: number;
     private yspeed: number;
-    private user: string;
-    private username: HTMLElement;
     private targetX: number;
     private landed: boolean;
 
     constructor(user: string, airportX: number, airportY: number) {
+        // Create plane gameobject that can 50/50 randomly go left or right
+        // The angle of flight is determined by evaluating the position of the plane according to it's airport
         let x = Math.round(Math.random());
         if (x == 0) {
             x = window.innerWidth + Math.random() * window.innerWidth;
@@ -54,36 +56,35 @@ class Plane extends GameObject {
                 this.yspeed = -1 * ratio;
             }
         }
-        this.landed = false;
         this.user = user;
         this.username = document.createElement("planeusername");
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
+        this.landed = false;
     }
 
     public move() {
+        // Checks if a plane has approached it's airport and sets appropriate landing speeds
         if (this.goingRight && this.landed == false && this.x >= this.targetX) {
             this.landed = true;
             this.xspeed = 0.5;
             this.yspeed = -0.25;
-            // this.targetX = 2 * window.innerWidth;
         } else if (!this.goingRight && this.landed == false && this.x <= this.targetX) {
             this.landed = true;
             this.xspeed = -0.5;
             this.yspeed = 0.25;
-            // this.targetX = -2 * window.innerWidth;
         }
+        // Checks if a plane is leaving it's airport and sets appropriate departure speeds
         if (this.goingRight && this.landed == true && this.x >= this.targetX + 100) {
             this.landed = false;
             this.xspeed = 5;
             this.yspeed = -1;
-            // this.targetX = 2 * window.innerWidth;
         } else if (!this.goingRight && this.landed == true && this.x <= this.targetX - 100) {
             this.landed = false;
             this.xspeed = -5;
             this.yspeed = 1;
-            // this.targetX = -2 * window.innerWidth;
         }
+        // Checks if planes have flown offscreen and resets them
         if (this.goingRight && this.x > window.innerWidth + 100) {
             this.x = 0 - window.innerWidth - Math.random() * window.innerWidth;
             this.y = window.innerHeight + Math.random() * window.innerHeight;

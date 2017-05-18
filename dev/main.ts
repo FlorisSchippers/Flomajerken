@@ -6,10 +6,7 @@ class Game {
     private planes: Plane[] = [];
 
     constructor() {
-        document.body.onclick = e => {
-            console.log("x: " + e.pageX + ", y: " + e.pageY);
-        }
-        // tile: 64x32
+        // Populate the screen with most efficient airport placements (tile: 64x32)
         this.airports.push(new Airport("Henk", 2, 65));
         this.airports.push(new Airport("Eddie", 2 + 640, 65));
         this.airports.push(new Airport("Brock", 2 + 1280, 65));
@@ -20,6 +17,7 @@ class Game {
         this.airports.push(new Airport("Eva", 2 + 1280, 65 + 448));
         this.airports.push(new Airport("Sammie", 2 + 320, 65 + 672));
         this.airports.push(new Airport("Harrie", 2 + 960, 65 + 672));
+        // Create a plane for each airport
         this.planes.push(new Plane("Henk", 2, 65));
         this.planes.push(new Plane("Eddie", 2 + 640, 65));
         this.planes.push(new Plane("Brock", 2 + 1280, 65));
@@ -34,6 +32,7 @@ class Game {
     }
 
     private gameLoop() {
+        // Move all planes individually
         this.planes.forEach(plane => {
             plane.move();
         });

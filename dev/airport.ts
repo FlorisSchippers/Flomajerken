@@ -7,19 +7,20 @@ class Airport extends GameObject {
     private username: HTMLElement;
 
     constructor(user: string, x: number, y: number) {
+        // Create airport gameobject
         super("airport", x, y);
         this.user = user;
         this.username = document.createElement("airportusername");
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
         this.div.setAttribute("id", this.user);
-
         this.div.onclick = e => {
             this._onclick();
         }
     }
 
     private _onclick(): void {
+        // Change airport texture on click for demonstration
         if (this.stage == 5) {
             this.stage = 0;
         } else {

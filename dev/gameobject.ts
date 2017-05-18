@@ -6,6 +6,7 @@ class GameObject {
     public y: number;
 
     constructor(name: string, x: number, y: number) {
+        // Append all gameobjects to the body
         this.name = name;
         this.div = document.createElement(name);
         document.body.appendChild(this.div);

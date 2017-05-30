@@ -39,12 +39,14 @@ leftplane {
     background-image: url(../images/leftplane.png);
     width: 50px;
     height: 25px;
+    z-index: 1;
 }
 
 rightplane {
     background-image: url(../images/rightplane.png);
     width: 50px;
     height: 25px;
+    z-index: 1;
 }
 
 ::selection {

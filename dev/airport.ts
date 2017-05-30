@@ -2,7 +2,7 @@
 
 class Airport extends GameObject {
 
-    private stage: number = 0;
+    public stage: number = 0;
     private user: string;
     private username: HTMLElement;
 
@@ -14,18 +14,11 @@ class Airport extends GameObject {
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
         this.div.setAttribute("id", this.user);
-        this.div.onclick = e => {
-            this._onclick();
-        }
     }
 
-    private _onclick(): void {
-        // Change airport texture on click for demonstration
-        if (this.stage == 5) {
-            this.stage = 0;
-        } else {
-            this.stage++;
-        }
+    public upgrade(): void {
+        // Change airport texture
+        this.stage++;
         switch (this.stage) {
             case 0:
                 this.div.style.backgroundImage = "url('images/airport0.png')";

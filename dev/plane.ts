@@ -7,32 +7,33 @@ class Plane extends GameObject {
     private goingRight: boolean;
     private xspeed: number;
     private yspeed: number;
+    private airport: Airport;
     private targetX: number;
     private targetY: number;
     private landed: boolean;
 
-    constructor(user: string, airportX: number, airportY: number) {
+    constructor(user: string, airport: Airport) {
         // Create plane gameobject that can 50/50 randomly go left or right
         // Calls determineFlightPath method to set the right course speeds
         let x = Math.round(Math.random());
         if (x == 0) {
             x = window.innerWidth + Math.random() * window.innerWidth;
         } else {
-            x = 0 - window.innerWidth - Math.random() * window.innerWidth;
+            x = 0 - Math.random() * window.innerWidth;
         }
         if (x > 0) {
             let y = 0 - window.innerHeight - Math.random() * window.innerHeight;
             super("leftplane", x, y);
+            this.airport = airport;
             this.goingRight = false;
-            this.targetX = airportX + 330; // Needs to
-            this.targetY = airportY + 130; // become dynamic
+            this.setTarget();
             this.determineFlightPath(x, y);
         } else {
             let y = window.innerHeight + Math.random() * window.innerHeight;
             super("rightplane", x, y);
+            this.airport = airport;
             this.goingRight = true;
-            this.targetX = airportX + 230; // Need to
-            this.targetY = airportY + 180; // become dynamic
+            this.setTarget();
             this.determineFlightPath(x, y);
         }
         this.user = user;
@@ -42,8 +43,67 @@ class Plane extends GameObject {
         this.landed = false;
     }
 
-    public determineFlightPath(x: number, y: number) {
-        // The angle of flight is determined by evaluating the position of the plane according to it's airport
+    private setTarget(): void {
+        if (!this.goingRight) {
+            switch (this.airport.stage) {
+                case 0:
+                    this.targetX = this.airport.x + 330;
+                    this.targetY = this.airport.y + 130;
+                    break;
+                case 1:
+                    this.targetX += 32;
+                    this.targetY += 16;
+                    break;
+                case 2:
+                    this.targetX += 32;
+                    this.targetY += 16;
+                    break;
+                case 3:
+                    this.targetX += 0;
+                    this.targetY += 0;
+                    break;
+                case 4:
+                    this.targetX += 0;
+                    this.targetY += 0;
+                    break;
+                case 5:
+                    this.targetX += 64;
+                    this.targetY += 32;
+                    break;
+            }
+        } else {
+            switch (this.airport.stage) {
+                case 0:
+                    this.targetX = this.airport.x + 230;
+                    this.targetY = this.airport.y + 180;
+                    break;
+                case 1:
+                    this.targetX += 32;
+                    this.targetY += 16;
+                    break;
+                case 2:
+                    this.targetX += 32;
+                    this.targetY += 16;
+                    break;
+                case 3:
+                    this.targetX += 0;
+                    this.targetY += 0;
+                    break;
+                case 4:
+                    this.targetX += 0;
+                    this.targetY += 0;
+                    break;
+                case 5:
+                    this.targetX += 64;
+                    this.targetY += 32;
+                    break;
+            }
+        }
+    }
+
+    public determineFlightPath(x: number, y: number): void {
+        // The angle of flight is determined by evaluating
+        // the position of the plane according to it's airport
         if (!this.goingRight) {
             let deltaX = x - this.targetX;
             let deltaY = this.targetY - y;
@@ -83,23 +143,27 @@ class Plane extends GameObject {
             this.yspeed = 0.25;
         }
         // Checks if a plane is leaving it's airport and sets appropriate departure speeds
-        if (this.goingRight && this.landed == true && this.x >= this.targetX + 100) { // Needs to become dynamic
+        if (this.goingRight && this.landed == true && this.x >= this.targetX + 100) {
             this.landed = false;
             this.xspeed = 5;
             this.yspeed = -1;
-        } else if (!this.goingRight && this.landed == true && this.x <= this.targetX - 100) { // Needs to become dynamic
+        } else if (!this.goingRight && this.landed == true && this.x <= this.targetX - 100) {
             this.landed = false;
             this.xspeed = -5;
             this.yspeed = 1;
         }
         // Checks if planes have flown offscreen and resets them
         if (this.goingRight && this.x > window.innerWidth + 100) {
-            this.x = 0 - window.innerWidth - Math.random() * window.innerWidth;
+            this.x = 0 - Math.random() * window.innerWidth;
             this.y = window.innerHeight + Math.random() * window.innerHeight;
+            this.airport.upgrade();
+            this.setTarget();
             this.determineFlightPath(this.x, this.y);
         } else if (!this.goingRight && this.x < -100) {
             this.x = window.innerWidth + Math.random() * window.innerWidth;
-            let y = 0 - window.innerHeight - Math.random() * window.innerHeight;
+            this.y = 0 - window.innerHeight - Math.random() * window.innerHeight;
+            this.airport.upgrade();
+            this.setTarget();
             this.determineFlightPath(this.x, this.y);
         }
         this.x += this.xspeed;

@@ -3,11 +3,10 @@
 class Airport extends GameObject {
 
     public stage: number = 0;
-    private user: string;
+    public user: string;
     private username: HTMLElement;
 
     constructor(user: string, x: number, y: number) {
-        // Create airport gameobject
         super("airport", x, y);
         this.user = user;
         this.username = document.createElement("airportusername");
@@ -17,7 +16,6 @@ class Airport extends GameObject {
     }
 
     public upgrade(): void {
-        // Change airport texture
         this.stage++;
         switch (this.stage) {
             case 0:

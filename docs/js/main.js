@@ -27,6 +27,7 @@ var Airport = (function (_super) {
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
         this.div.setAttribute("id", this.user);
+        this.div.style.display = 'none';
     }
     Airport.prototype.upgrade = function () {
         this.stage++;
@@ -70,65 +71,91 @@ var Game = (function () {
         var _this = this;
         this.airports = [];
         this.planes = [];
+        this.users = [];
         this.gametickCouter = 0;
         this.timerCounter = 0;
-        this.airports.push(new Airport("Henk", 2, 65));
-        this.airports.push(new Airport("Eddie", 2 + 640, 65));
-        this.airports.push(new Airport("Brock", 2 + 1280, 65));
-        this.airports.push(new Airport("Peter", 2 + 320, 65 + 224));
-        this.airports.push(new Airport("Oscar", 2 + 960, 65 + 224));
-        this.airports.push(new Airport("Robin", 2, 65 + 448));
-        this.airports.push(new Airport("Casey", 2 + 640, 65 + 448));
-        this.airports.push(new Airport("Eva", 2 + 1280, 65 + 448));
-        this.airports.push(new Airport("Sammie", 2 + 320, 65 + 672));
-        this.airports.push(new Airport("Harrie", 2 + 960, 65 + 672));
+        this.airports.push(new Airport("", 2, 65));
+        this.airports.push(new Airport("", 2 + 640, 65));
+        this.airports.push(new Airport("", 2 + 1280, 65));
+        this.airports.push(new Airport("", 2 + 320, 65 + 224));
+        this.airports.push(new Airport("", 2 + 960, 65 + 224));
+        this.airports.push(new Airport("", 2, 65 + 448));
+        this.airports.push(new Airport("", 2 + 640, 65 + 448));
+        this.airports.push(new Airport("", 2 + 1280, 65 + 448));
+        this.airports.push(new Airport("", 2 + 320, 65 + 672));
+        this.airports.push(new Airport("", 2 + 960, 65 + 672));
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.gametickCouter++;
-        if (this.gametickCouter >= 60) {
+        if (this.gametickCouter >= 100) {
             this.gametickCouter = 0;
             this.timerCounter++;
         }
         if (this.timerCounter >= 1) {
             this.timerCounter = 0;
-            $.ajax({
-                url: 'http://localhost:8000/flomajerkenapi/users/',
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data: { format: 'json' },
-                type: 'GET',
-                success: function (data) {
-                    data.forEach(function (dat) {
-                        _this.airports.forEach(function (airport) {
-                            if (airport.user == dat.name) {
-                                console.log('Spawning new plane for airport: ' + airport.user);
-                                _this.planes.push(new Plane(dat.name, airport));
-                                console.log('Deleting resource on url: http://localhost:8000/flomajerkenapi/users/' + dat._id);
-                                $.ajax({
-                                    url: 'http://localhost:8000/flomajerkenapi/users/' + dat._id,
-                                    type: 'DELETE',
-                                    success: function (data) { console.log('Deleted entry for user: ' + dat._id); }
-                                });
-                            }
-                        });
-                    });
-                }
-            });
+            this.makeAjaxCall();
         }
-        console.log(this.timerCounter);
         this.planes.forEach(function (plane) {
             plane.move();
         });
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
+    Game.prototype.makeAjaxCall = function () {
+        var _this = this;
+        $.ajax({
+            url: 'http://145.24.222.211:8000/flomajerkenAPI/users/',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            data: { format: 'json' },
+            type: 'GET',
+            success: function (data) {
+                data.forEach(function (dat) {
+                    if (_this.users.indexOf(dat.name) != -1) {
+                        _this.airports.forEach(function (airport) {
+                            if (airport.user == dat.name) {
+                                console.log('Spawning new plane for airport: ' + airport.user);
+                                _this.planes.push(new Plane(dat.name, airport));
+                                console.log('Deleting resource on url: http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id);
+                                $.ajax({
+                                    url: 'http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id,
+                                    type: 'DELETE',
+                                    success: function (data) { console.log('Deleted entry for user: ' + dat._id); }
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        console.log('Spawning new airport for user: ' + dat.name);
+                        _this.users.push(dat.name);
+                        _this.airports[_this.users.length - 1].user = dat.name;
+                        _this.airports[_this.users.length - 1].username.innerHTML = dat.name;
+                        _this.airports[_this.users.length - 1].div.style.display = 'inline';
+                        console.log('Deleting resource on url: http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id);
+                        $.ajax({
+                            url: 'http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id,
+                            type: 'DELETE',
+                            success: function (data) { console.log('Deleted entry for user: ' + dat._id); }
+                        });
+                    }
+                    ;
+                });
+            }
+        });
+    };
+    Game.getInstance = function () {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    };
     return Game;
 }());
 window.addEventListener("load", function () {
-    new Game();
+    Game.getInstance();
 });
 var Plane = (function (_super) {
     __extends(Plane, _super);
@@ -271,19 +298,13 @@ var Plane = (function (_super) {
             this.xspeed = -5;
             this.yspeed = 1;
         }
-        if (this.goingRight && this.x > window.innerWidth + 100) {
-            this.x = 0 - Math.random() * window.innerWidth;
-            this.y = window.innerHeight + Math.random() * window.innerHeight;
+        if ((this.goingRight && this.x > window.innerWidth + 100) || (!this.goingRight && this.x < -100)) {
+            var game = Game.getInstance();
+            var i = game.planes.indexOf(this);
+            if (i != -1) {
+                game.planes.splice(i, 1);
+            }
             this.airport.upgrade();
-            this.setTarget();
-            this.determineFlightPath(this.x, this.y);
-        }
-        else if (!this.goingRight && this.x < -100) {
-            this.x = window.innerWidth + Math.random() * window.innerWidth;
-            this.y = 0 - window.innerHeight - Math.random() * window.innerHeight;
-            this.airport.upgrade();
-            this.setTarget();
-            this.determineFlightPath(this.x, this.y);
         }
         this.x += this.xspeed;
         this.y += this.yspeed;

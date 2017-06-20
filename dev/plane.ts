@@ -152,20 +152,29 @@ class Plane extends GameObject {
             this.xspeed = -5;
             this.yspeed = 1;
         }
-        // Checks if planes have flown offscreen and resets them
-        if (this.goingRight && this.x > window.innerWidth + 100) {
-            this.x = 0 - Math.random() * window.innerWidth;
-            this.y = window.innerHeight + Math.random() * window.innerHeight;
+        // Remove planes that have flown offscreen get removed
+        if ((this.goingRight && this.x > window.innerWidth + 100) || (!this.goingRight && this.x < -100)) {
+            let game = Game.getInstance();
+            let i: number = game.planes.indexOf(this);
+            if (i != -1) {
+                game.planes.splice(i, 1);
+            }
             this.airport.upgrade();
-            this.setTarget();
-            this.determineFlightPath(this.x, this.y);
-        } else if (!this.goingRight && this.x < -100) {
-            this.x = window.innerWidth + Math.random() * window.innerWidth;
-            this.y = 0 - window.innerHeight - Math.random() * window.innerHeight;
-            this.airport.upgrade();
-            this.setTarget();
-            this.determineFlightPath(this.x, this.y);
         }
+        // Unused code to check if planes have flown offscreen and resets them
+        // if (this.goingRight && this.x > window.innerWidth + 100) {
+        //     this.x = 0 - Math.random() * window.innerWidth;
+        //     this.y = window.innerHeight + Math.random() * window.innerHeight;
+        //     this.airport.upgrade();
+        //     this.setTarget();
+        //     this.determineFlightPath(this.x, this.y);
+        // } else if (!this.goingRight && this.x < -100) {
+        //     this.x = window.innerWidth + Math.random() * window.innerWidth;
+        //     this.y = 0 - window.innerHeight - Math.random() * window.innerHeight;
+        //     this.airport.upgrade();
+        //     this.setTarget();
+        //     this.determineFlightPath(this.x, this.y);
+        // }
         this.x += this.xspeed;
         this.y += this.yspeed;
         this.draw();

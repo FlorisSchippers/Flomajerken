@@ -4,7 +4,7 @@ class Airport extends GameObject {
 
     public stage: number = 0;
     public user: string;
-    private username: HTMLElement;
+    public username: HTMLElement;
 
     constructor(user: string, x: number, y: number) {
         super("airport", x, y);
@@ -13,6 +13,7 @@ class Airport extends GameObject {
         this.username.innerHTML = this.user;
         this.div.appendChild(this.username);
         this.div.setAttribute("id", this.user);
+        this.div.style.display = 'none';
     }
 
     public upgrade(): void {

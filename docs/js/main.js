@@ -123,7 +123,7 @@ var Game = (function () {
                                 $.ajax({
                                     url: 'http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id,
                                     type: 'DELETE',
-                                    success: function (data) { console.log('Deleted entry for user: ' + dat._id); }
+                                    success: function (data) { console.log('Deleted entry for user: ' + dat.name); }
                                 });
                             }
                         });
@@ -138,7 +138,7 @@ var Game = (function () {
                         $.ajax({
                             url: 'http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id,
                             type: 'DELETE',
-                            success: function (data) { console.log('Deleted entry for user: ' + dat._id); }
+                            success: function (data) { console.log('Deleted entry for user: ' + dat.name); }
                         });
                     }
                     ;
@@ -252,12 +252,12 @@ var Plane = (function (_super) {
             var deltaX = x - this.targetX;
             var deltaY = this.targetY - y;
             if (deltaX > deltaY) {
-                var ratio = deltaX / deltaY;
+                var ratio = Math.round(deltaX / deltaY);
                 this.xspeed = -1 * ratio;
                 this.yspeed = 1;
             }
             else {
-                var ratio = deltaY / deltaX;
+                var ratio = Math.round(deltaY / deltaX);
                 this.xspeed = -1;
                 this.yspeed = 1 * ratio;
             }
@@ -266,12 +266,12 @@ var Plane = (function (_super) {
             var deltaX = this.targetX - x;
             var deltaY = y - this.targetY;
             if (deltaX > deltaY) {
-                var ratio = deltaX / deltaY;
+                var ratio = Math.round(deltaX / deltaY);
                 this.xspeed = 1 * ratio;
                 this.yspeed = -1;
             }
             else {
-                var ratio = deltaY / deltaX;
+                var ratio = Math.round(deltaY / deltaX);
                 this.xspeed = 1;
                 this.yspeed = -1 * ratio;
             }
@@ -304,6 +304,7 @@ var Plane = (function (_super) {
             if (i != -1) {
                 game.planes.splice(i, 1);
             }
+            this.div.remove();
             this.airport.upgrade();
         }
         this.x += this.xspeed;

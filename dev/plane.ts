@@ -108,11 +108,11 @@ class Plane extends GameObject {
             let deltaX = x - this.targetX;
             let deltaY = this.targetY - y;
             if (deltaX > deltaY) {
-                let ratio = deltaX / deltaY;
+                let ratio = Math.round(deltaX / deltaY);
                 this.xspeed = -1 * ratio;
                 this.yspeed = 1;
             } else {
-                let ratio = deltaY / deltaX;
+                let ratio = Math.round(deltaY / deltaX);
                 this.xspeed = -1;
                 this.yspeed = 1 * ratio;
             }
@@ -120,11 +120,11 @@ class Plane extends GameObject {
             let deltaX = this.targetX - x;
             let deltaY = y - this.targetY;
             if (deltaX > deltaY) {
-                let ratio = deltaX / deltaY;
+                let ratio = Math.round(deltaX / deltaY);
                 this.xspeed = 1 * ratio;
                 this.yspeed = -1;
             } else {
-                let ratio = deltaY / deltaX;
+                let ratio = Math.round(deltaY / deltaX);
                 this.xspeed = 1;
                 this.yspeed = -1 * ratio;
             }
@@ -159,6 +159,7 @@ class Plane extends GameObject {
             if (i != -1) {
                 game.planes.splice(i, 1);
             }
+            this.div.remove();
             this.airport.upgrade();
         }
         // Unused code to check if planes have flown offscreen and resets them

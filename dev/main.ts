@@ -63,7 +63,7 @@ class Game {
                                 $.ajax({
                                     url: 'http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id,
                                     type: 'DELETE',
-                                    success: (data) => { console.log('Deleted entry for user: ' + dat._id) }
+                                    success: (data) => { console.log('Deleted entry for user: ' + dat.name) }
                                 });
                             }
                         })
@@ -77,7 +77,7 @@ class Game {
                         $.ajax({
                             url: 'http://145.24.222.211:8000/flomajerkenAPI/users/' + dat._id,
                             type: 'DELETE',
-                            success: (data) => { console.log('Deleted entry for user: ' + dat._id) }
+                            success: (data) => { console.log('Deleted entry for user: ' + dat.name) }
                         });
                     };
                 });

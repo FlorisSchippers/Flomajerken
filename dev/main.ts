@@ -27,7 +27,7 @@ class Game {
 
     private gameLoop() {
         this.gametickCouter++;
-        if (this.gametickCouter >= 100) {
+        if (this.gametickCouter >= 120) {
             this.gametickCouter = 0;
             this.timerCounter++;
         }
@@ -38,6 +38,8 @@ class Game {
         // Move all planes individually
         this.planes.forEach(plane => {
             plane.move();
+            plane.draw();
+
         });
         requestAnimationFrame(() => this.gameLoop());
     }

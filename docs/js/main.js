@@ -89,7 +89,7 @@ var Game = (function () {
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.gametickCouter++;
-        if (this.gametickCouter >= 100) {
+        if (this.gametickCouter >= 120) {
             this.gametickCouter = 0;
             this.timerCounter++;
         }
@@ -99,6 +99,7 @@ var Game = (function () {
         }
         this.planes.forEach(function (plane) {
             plane.move();
+            plane.draw();
         });
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
@@ -193,56 +194,68 @@ var Plane = (function (_super) {
         if (!this.goingRight) {
             switch (this.airport.stage) {
                 case 0:
+                    console.log("stage 0");
                     this.targetX = this.airport.x + 330;
                     this.targetY = this.airport.y + 130;
                     break;
                 case 1:
-                    this.targetX += 32;
-                    this.targetY += 16;
+                    console.log("stage 1");
+                    this.targetX = this.airport.x + 330 + 32;
+                    this.targetY = this.airport.y + 130 + 16;
                     break;
                 case 2:
-                    this.targetX += 32;
-                    this.targetY += 16;
+                    console.log("stage 2");
+                    this.targetX = this.airport.x + 330 + 32 + 32;
+                    this.targetY = this.airport.y + 130 + 16 + 16;
                     break;
                 case 3:
-                    this.targetX += 0;
-                    this.targetY += 0;
+                    console.log("stage 3");
+                    this.targetX = this.airport.x + 330 + 32 + 32;
+                    this.targetY = this.airport.y + 130 + 16 + 16;
                     break;
                 case 4:
-                    this.targetX += 0;
-                    this.targetY += 0;
+                    console.log("stage 4");
+                    this.targetX = this.airport.x + 330 + 32 + 32;
+                    this.targetY = this.airport.y + 130 + 16 + 16;
                     break;
                 case 5:
-                    this.targetX += 64;
-                    this.targetY += 32;
+                    console.log("stage 5");
+                    this.targetX = this.airport.x + 330 + 32 + 32 + 64;
+                    this.targetY = this.airport.y + 130 + 16 + 16 + 32;
                     break;
             }
         }
         else {
             switch (this.airport.stage) {
                 case 0:
+                    console.log("stage 0");
                     this.targetX = this.airport.x + 230;
                     this.targetY = this.airport.y + 180;
                     break;
                 case 1:
-                    this.targetX += 32;
-                    this.targetY += 16;
+                    console.log("stage 1");
+                    this.targetX = this.airport.x + 230 + 32;
+                    this.targetY = this.airport.y + 180 + 16;
                     break;
                 case 2:
-                    this.targetX += 32;
-                    this.targetY += 16;
+                    console.log("stage 2");
+                    this.targetX = this.airport.x + 230 + 32 + 32;
+                    this.targetY = this.airport.y + 180 + 16 + 16;
                     break;
                 case 3:
-                    this.targetX += 0;
-                    this.targetY += 0;
+                    console.log("stage 3");
+                    this.targetX = this.airport.x + 230 + 32 + 32;
+                    this.targetY = this.airport.y + 180 + 16 + 16;
                     break;
                 case 4:
-                    this.targetX += 0;
-                    this.targetY += 0;
+                    console.log("stage 4");
+                    this.targetX = this.airport.x + 230 + 32 + 32;
+                    this.targetY = this.airport.y + 180 + 16 + 16;
                     break;
                 case 5:
-                    this.targetX += 64;
-                    this.targetY += 32;
+                    console.log("stage 5");
+                    this.targetX = this.airport.x + 230 + 32 + 32 + 64;
+                    this.targetY = this.airport.y + 180 + 16 + 16 + 32;
                     break;
             }
         }
@@ -252,12 +265,12 @@ var Plane = (function (_super) {
             var deltaX = x - this.targetX;
             var deltaY = this.targetY - y;
             if (deltaX > deltaY) {
-                var ratio = Math.round(deltaX / deltaY);
+                var ratio = deltaX / deltaY;
                 this.xspeed = -1 * ratio;
                 this.yspeed = 1;
             }
             else {
-                var ratio = Math.round(deltaY / deltaX);
+                var ratio = deltaY / deltaX;
                 this.xspeed = -1;
                 this.yspeed = 1 * ratio;
             }
@@ -266,12 +279,12 @@ var Plane = (function (_super) {
             var deltaX = this.targetX - x;
             var deltaY = y - this.targetY;
             if (deltaX > deltaY) {
-                var ratio = Math.round(deltaX / deltaY);
+                var ratio = deltaX / deltaY;
                 this.xspeed = 1 * ratio;
                 this.yspeed = -1;
             }
             else {
-                var ratio = Math.round(deltaY / deltaX);
+                var ratio = deltaY / deltaX;
                 this.xspeed = 1;
                 this.yspeed = -1 * ratio;
             }
@@ -309,7 +322,6 @@ var Plane = (function (_super) {
         }
         this.x += this.xspeed;
         this.y += this.yspeed;
-        this.draw();
     };
     return Plane;
 }(GameObject));
